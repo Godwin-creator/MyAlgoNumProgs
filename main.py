@@ -1,7 +1,7 @@
 import os
 import sys
+from sympy import sympify, pi #pour que l'user puisse saisir pi pour π.
 
-# Ajout du chemin pour importer les modules du projet
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from lineaires.directes import gauss_sans_pivot, gauss_pivot, gauss_jordan, crout, cholesky
@@ -96,6 +96,7 @@ def main():
                     break
                 try:
                     f = saisir_fonction.saisir_fonction()
+
                     if sous_choix == '1':
                         a = float(input("Borne inférieure a : "))
                         b = float(input("Borne supérieure b : "))
@@ -105,6 +106,7 @@ def main():
                         else:
                             intervalles = balayage.balayage(f, a, b, h)
                             print("Intervalles contenant une racine :", intervalles)
+
                     elif sous_choix == '2':
                         a = float(input("Borne inférieure a : "))
                         b = float(input("Borne supérieure b : "))
@@ -112,15 +114,25 @@ def main():
                         max_iteration = int(input("Max itérations (def=100) : ") or 100)
                         racine, iter_, conv = dichotomie.dichotomie(f, a, b, tolerance, max_iteration)
                         print(f"Racine : {racine}, itérations : {iter_}, convergence : {conv}")
+
                     elif sous_choix == '3':
-                        # Pour Newton, besoin de la dérivée
+                        #la dérivée est indisp
                         print("Saisie de la dérivée f'(x) :")
                         f_prime = saisir_fonction.saisir_fonction()
-                        x0 = float(input("Point initial x0 : "))
+
+                        # Avant : x0 = float(input("Point initial x0 : "))
+                        # Maintenant pour que l'user puisse saisir x0 = pi pour π :
+                        x0_str = input("Point initial x0 : ")
+                        x0 = float(sympify(x0_str))
+
                         tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
                         max_iteration = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter_, conv = newton.newton(f, f_prime, x0, tolerance, max_iteration)
-                        print(f"Racine : {racine}, itérations : {iter_}, convergence : {conv}")
+                        racine, iter_, message = newton.newton(f, f_prime, x0, tolerance, max_iteration)
+                        print(f"Racine = {racine}, itérations = {iter_}")
+                        print(message)
+                        #racine, iter_, conv = newton.newton(f, f_prime, x0, tolerance, max_iteration)
+                        #print(f"Racine : {racine}, itérations : {iter_}, convergence : {conv}")
+
                     elif sous_choix == '4':
                         x0 = float(input("Premier point x0 : "))
                         x1 = float(input("Second point x1 : "))
