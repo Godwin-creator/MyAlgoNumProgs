@@ -1,4 +1,39 @@
 #Utilitaires pour les méthodes d'interpolation et d'approximation.
+import sympy as sp
+
+def expr_lagrange(xi, yi):
+
+    x = sp.Symbol('x')
+    n = len(xi)
+    expr = 0
+    for i in range(n):
+        Li = 1
+        for j in range(n):
+            if j != i:
+                Li *= (x - xi[j]) / (xi[i] - xi[j])
+        expr += yi[i] * Li
+    return sp.simplify(expr)
+
+def expr_newton(xi, yi):
+
+    x = sp.Symbol('x')
+    n = len(xi)
+    # Calcul des différences divisées
+    dd = [[0]*n for _ in range(n)]
+    for i in range(n):
+        dd[i][i] = yi[i]
+    for k in range(1, n):
+        for i in range(n-k):
+            dd[i][i+k] = (dd[i+1][i+k] - dd[i][i+k-1]) / (xi[i+k] - xi[i])
+    coeffs = [dd[0][i] for i in range(n)]
+    # Construction du polynôme
+    expr = 0
+    produit = 1
+    for i in range(n):
+        expr += coeffs[i] * produit
+        if i < n-1:
+            produit *= (x - xi[i])
+    return sp.simplify(expr)
 
 def verifier_points(xi, yi):
 
