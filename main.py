@@ -1,6 +1,8 @@
 import os
 import sys
-from sympy import sympify, pi #pour que l'user puisse saisir pi pour π.
+import math
+from sympy import symbols, sympify, pi, E
+#pour que l'user puisse saisir pi pour π.
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -78,12 +80,12 @@ def main():
                         print("Solution :", x)
                     elif sous_choix == '6':
                         x0 = [0.0]*n
-                        x, iter_, conv = jacobi.jacobi(A, b, x0)
-                        print(f"Solution : {x}, itérations : {iter_}, convergence : {conv}")
+                        x, iter, conv = jacobi.jacobi(A, b, x0)
+                        print(f"Solution : {x}, itérations : {iter}, convergence : {conv}")
                     elif sous_choix == '7':
                         x0 = [0.0]*n
-                        x, iter_, conv = gauss_seidel.gauss_seidel(A, b, x0)
-                        print(f"Solution : {x}, itérations : {iter_}, convergence : {conv}")
+                        x, iter, conv = gauss_seidel.gauss_seidel(A, b, x0)
+                        print(f"Solution : {x}, itérations : {iter}, convergence : {conv}")
                     else:
                         print("Choix invalide")
                 except Exception as e:
@@ -112,8 +114,8 @@ def main():
                         b = float(input("Borne supérieure b : "))
                         tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
                         max_iteration = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter_, conv = dichotomie.dichotomie(f, a, b, tolerance, max_iteration)
-                        print(f"Racine : {racine}, itérations : {iter_}, convergence : {conv}")
+                        racine, iter, conv = dichotomie.dichotomie(f, a, b, tolerance, max_iteration)
+                        print(f"Racine : {racine}, itérations : {iter}, convergence : {conv}")
 
                     elif sous_choix == '3':
                         #la dérivée est indisp
@@ -127,28 +129,52 @@ def main():
 
                         tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
                         max_iteration = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter_, message = newton.newton(f, f_prime, x0, tolerance, max_iteration)
-                        print(f"Racine = {racine}, itérations = {iter_}")
+                        racine, iter, message = newton.newton(f, f_prime, x0, tolerance, max_iteration)
+                        print(f"Racine = {racine}, itérations = {iter}")
                         print(message)
-                        #racine, iter_, conv = newton.newton(f, f_prime, x0, tolerance, max_iteration)
-                        #print(f"Racine : {racine}, itérations : {iter_}, convergence : {conv}")
+                        #racine, iter, conv = newton.newton(f, f_prime, x0, tolerance, max_iteration)
+                        #print(f"Racine : {racine}, itérations : {iter}, convergence : {conv}")
 
                     elif sous_choix == '4':
                         x0 = float(input("Premier point x0 : "))
                         x1 = float(input("Second point x1 : "))
                         tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
                         max_iteration = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter_, conv = secante.secante(f, x0, x1, tolerance, max_iteration)
-                        print(f"Racine : {racine}, itérations : {iter_}, convergence : {conv}")
+                        racine, iter, conv = secante.secante(f, x0, x1, tolerance, max_iteration)
+                        print(f"Racine : {racine}, itérations : {iter}, convergence : {conv}")
+
                     elif sous_choix == '5':
                         # Pour point fixe, on a besoin de g(x) = x - f(x) ou autre
                         print("Saisie de la fonction g(x) pour le point fixe x = g(x) :")
                         g = saisir_fonction.saisir_fonction()
-                        x0 = float(input("Point initial x0 : "))
-                        tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
-                        max_iteration = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter_, conv = point_fixe.point_fixe(g, x0, tolerance, max_iteration)
-                        print(f"Point fixe : {racine}, itérations : {iter_}, convergence : {conv}")
+                        try:
+                            x0_str = input("Point initial x0 : ")
+                            allowed = {"pi": pi, "E": E}
+                            x0 = float(sympify(x0_str, locals=allowed))
+                        except Exception:
+                            print("Erreur : valeur initiale invalide.")
+                            return
+                        try:
+                            tol_str = input("Tolérance (def=1e-6) : ")
+                            tolerance = float(sympify(tol_str, locals=allowed)) if tol_str else 1e-6
+                            if tolerance <= 0:
+                                raise ValueError
+                        except Exception:
+                            print("Erreur : tolérance invalide.")
+                            return
+                        try:
+                            max_str = input("Max itérations (def=100) : ")
+                            max_iteration = int(max_str) if max_str else 100
+                            if max_iteration <= 0:
+                                raise ValueError
+                        except Exception:
+                            print("Erreur : nombre d'itérations invalide.")
+                            return
+                        racine, nb_iter, conv = point_fixe.point_fixe(g, x0, tolerance, max_iteration)
+                        print(f"Point fixe : {racine}")
+                        print(f"Itérations : {nb_iter}")
+                        print(f"Convergence : {conv}")
+
                     else:
                         print("Choix invalide")
                 except Exception as e:
