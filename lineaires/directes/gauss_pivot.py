@@ -1,22 +1,22 @@
 from utils.verifications import verifier_egalite_dimensions, verifier_tolerance
 from utils.linear_utils import copie_matrice, copie_vecteur
 
-def gauss_pivot(A, b, tol=1e-12):
+def gauss_pivot(A, b, tolerance=1e-12):
     n = verifier_egalite_dimensions(A, b)
-    tol = verifier_tolerance(tol)
+    tolerance = verifier_tolerance(tolerance)
 
     A = copie_matrice(A)
     b = copie_vecteur(b)
 
     for k in range(n-1):
-        pivot_row = max(range(k, n), key=lambda r: abs(A[r][k]))
-        pivot_val = abs(A[pivot_row][k])
-        if pivot_val < tol:
-            raise ValueError(f"Matrice singulière ou numériquement instable : pivot trop petit (|a[{pivot_row}][{k}]| = {pivot_val} < {tol}).")
+        ligne_pivot = max(range(k, n), key=lambda r: abs(A[r][k]))
+        valeur_pivot = abs(A[ligne_pivot][k])
+        if valeur_pivot < tolerance:
+            raise ValueError(f"Matrice singulière ou numériquement instable : pivot trop petit (|a[{ligne_pivot}][{k}]| = {valeur_pivot} < {tolerance}).")
 
-        if pivot_row != k:
-            A[k], A[pivot_row] = A[pivot_row], A[k]
-            b[k], b[pivot_row] = b[pivot_row], b[k]
+        if ligne_pivot != k:
+            A[k], A[ligne_pivot] = A[ligne_pivot], A[k]
+            b[k], b[ligne_pivot] = b[ligne_pivot], b[k]
 
         for i in range(k+1, n):
             factor = A[i][k] / A[k][k]
@@ -25,7 +25,7 @@ def gauss_pivot(A, b, tol=1e-12):
             b[i] -= factor * b[k]
 
     # Vérification du dernier pivot
-    if abs(A[n-1][n-1]) < tol:
+    if abs(A[n-1][n-1]) < tolerance:
         raise ValueError("Matrice singulière : dernier pivot nul.")
 
     # Résolution par remontée

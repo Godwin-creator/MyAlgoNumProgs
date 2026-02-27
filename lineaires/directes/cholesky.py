@@ -5,7 +5,7 @@ def cholesky(A, tolerance=1e-12):
     n = verifier_matrice_carree(A)
     tolerance = verifier_tolerance(tolerance)
 
-    # Vérification de la symétrie
+    # Vérifions la symétrie
     for i in range(n):
         for j in range(i, n):
             if abs(A[i][j] - A[j][i]) > tolerance:

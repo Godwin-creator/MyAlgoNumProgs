@@ -79,12 +79,12 @@ def main():
                         print("Solution :", x)
                     elif sous_choix == '6':
                         x0 = [0.0]*n
-                        x, iter, conv = jacobi.jacobi(A, b, x0)
-                        print(f"Solution : {x}, itérations : {iter}, convergence : {conv}")
+                        x, iterance, conv = jacobi.jacobi(A, b, x0)
+                        print(f"Solution : {x}, itérations : {iterance}, convergence : {conv}")
                     elif sous_choix == '7':
                         x0 = [0.0]*n
-                        x, iter, conv = gauss_seidel.gauss_seidel(A, b, x0)
-                        print(f"Solution : {x}, itérations : {iter}, convergence : {conv}")
+                        x, iterance, conv = gauss_seidel.gauss_seidel(A, b, x0)
+                        print(f"Solution : {x}, itérations : {iterance}, convergence : {conv}")
                     else:
                         print("Choix invalide")
                 except Exception as e:
@@ -113,8 +113,8 @@ def main():
                         b = float(input("Borne supérieure b : "))
                         tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
                         max_iteration = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter, conv = dichotomie.dichotomie(f, a, b, tolerance, max_iteration)
-                        print(f"Racine : {racine}, itérations : {iter}, convergence : {conv}")
+                        racine, iterance, conv = dichotomie.dichotomie(f, a, b, tolerance, max_iteration)
+                        print(f"Racine : {racine}, itérations : {iterance}, convergence : {conv}")
 
                     elif sous_choix == '3':
                         #la dérivée est indisp
@@ -128,11 +128,11 @@ def main():
 
                         tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
                         max_iteration = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter, message = newton.newton(f, f_prime, x0, tolerance, max_iteration)
-                        print(f"Racine = {racine}, itérations = {iter}")
+                        racine, iterance, message = newton.newton(f, f_prime, x0, tolerance, max_iteration)
+                        print(f"Racine = {racine}, itérations = {iterance}")
                         print(message)
-                        #racine, iter, conv = newton.newton(f, f_prime, x0, tolerance, max_iteration)
-                        #print(f"Racine : {racine}, itérations : {iter}, convergence : {conv}")
+                        #racine, iterance, conv = newton.newton(f, f_prime, x0, tolerance, max_iteration)
+                        #print(f"Racine : {racine}, itérations : {iterance}, convergence : {conv}")
 
                     elif sous_choix == '4':
                         try:

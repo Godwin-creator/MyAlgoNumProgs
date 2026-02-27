@@ -1,28 +1,18 @@
 from utils.verifications import verifier_egalite_dimensions, verifier_tolerance
 from utils.linear_utils import copie_matrice, copie_vecteur
 
-def gauss_sans_pivot(A, b, tol=1e-12):
-    """
-    Résolution par élimination de Gauss sans pivot.
-    La matrice A doit être inversible et avoir tous ses pivots non nuls.
-    Paramètres :
-        A : matrice carrée (liste de listes)
-        b : second membre (liste)
-        tol : seuil pour considérer un pivot comme nul (par défaut 1e-12)
-    Retourne :
-        x : vecteur solution (liste)
-    Lève une exception si un pivot est nul ou si la matrice est singulière.
-    """
+def gauss_sans_pivot(A, b, tolerance=1e-12):
+
     n = verifier_egalite_dimensions(A, b)
-    tol = verifier_tolerance(tol)
+    tolerance = verifier_tolerance(tolerance)
 
     A = copie_matrice(A)
     b = copie_vecteur(b)
 
     # Triangularisation
     for k in range(n-1):
-        if abs(A[k][k]) < tol:
-            raise ValueError(f"Pivot nul à l'étape {k} : |a[{k}][{k}]| = {abs(A[k][k])} < {tol}. Utilisez la méthode avec pivot.")
+        if abs(A[k][k]) < tolerance:
+            raise ValueError(f"Pivot nul à l'étape {k} : |a[{k}][{k}]| = {abs(A[k][k])} < {tolerance}. Utilisez la méthode avec pivot.")
         for i in range(k+1, n):
             factor = A[i][k] / A[k][k]
             # Mise à jour de la ligne i à partir de k+1
@@ -32,7 +22,7 @@ def gauss_sans_pivot(A, b, tol=1e-12):
             # Optionnel : A[i][k] = 0.0
 
     # Vérification du dernier pivot
-    if abs(A[n-1][n-1]) < tol:
+    if abs(A[n-1][n-1]) < tolerance:
         raise ValueError("Matrice singulière : dernier pivot nul.")
 
     # Résolution par remontée
