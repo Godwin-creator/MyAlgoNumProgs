@@ -47,12 +47,10 @@ def verifier_vecteur(b, taille_attendue=None, nom="b"):
 def verifier_egalite_dimensions(A, b):
     n = verifier_matrice_carree(A)
     m = verifier_vecteur(b, n)
-    # n et m sont déjà égaux grâce à la vérification
     return n
 
 
 def verifier_tolerance(tolerance, nom="tol"):
-    #Vérifie que la tolérance est un nombre positif.
     if not isinstance(tolerance, (int, float)):
         raise TypeError(f"{nom} doit être un nombre.")
     if tolerance <= 0:
@@ -61,7 +59,6 @@ def verifier_tolerance(tolerance, nom="tol"):
 
 
 def verifier_iterations(max_iteration, nom="max_iter"):
-    #Vérifie que le nombre d'itérations est un entier positif.
     if not isinstance(max_iteration, int):
         raise TypeError(f"{nom} doit être un entier.")
     if max_iteration <= 0:
