@@ -1,8 +1,7 @@
 import os
-import sys
 import math
-from sympy import symbols, sympify, pi, E
-#pour que l'user puisse saisir pi pour π.
+import sys
+from sympy import symbols, sympify, pi, E #pour que l'user puisse saisir pi pour π.
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -136,12 +135,25 @@ def main():
                         #print(f"Racine : {racine}, itérations : {iter}, convergence : {conv}")
 
                     elif sous_choix == '4':
-                        x0 = float(input("Premier point x0 : "))
-                        x1 = float(input("Second point x1 : "))
+                        try:
+                            x0 = float(sympify(input("Premier point x0 : ")))
+                            x1 = float(sympify(input("Second point x1 : ")))
+                        except Exception as e:
+                            print("Erreur dans les points initiaux :", e)
+                            return
+                        try:
+                            f0 = f(x0)
+                            f1 = f(x1)
+                        except Exception as e:
+                            print("Erreur : f(x0) ou f(x1) non définie :", e)
+                            return
+                        if math.isnan(f0) or math.isnan(f1) or math.isinf(f0) or math.isinf(f1):
+                            print("Erreur : valeur infinie ou NaN détectée.")
+                            return
                         tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
                         max_iteration = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter, conv = secante.secante(f, x0, x1, tolerance, max_iteration)
-                        print(f"Racine : {racine}, itérations : {iter}, convergence : {conv}")
+                        racine, nb_iter, conv = secante.secante(f, x0, x1, tolerance, max_iteration)
+                        print(f"Racine : {racine}, itérations : {nb_iter}, convergence : {conv}")
 
                     elif sous_choix == '5':
                         # Pour point fixe, on a besoin de g(x) = x - f(x) ou autre
