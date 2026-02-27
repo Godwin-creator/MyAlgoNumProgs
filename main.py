@@ -11,7 +11,7 @@ from utils import saisir_fonction, saisir_matrice
 #from utils.linear_utils import resoudre_LU, resoudre_Cholesky
 
 def menu_principal():
-    print("\n=== Analyse Numérique : Résolution d'équations ===")
+    print("\n||- Analyse Numérique : Résolution d'équations -||")
     print("1. Systèmes linéaires")
     print("2. Équations non linéaires")
     print("0. Quitter")
@@ -22,10 +22,10 @@ def menu_lineaire():
     print("1. Gauss sans pivot")
     print("2. Gauss avec pivot partiel")
     print("3. Gauss-Jordan")
-    print("4. Décomposition LU (Crout)")
+    print("4. Crout (Décomposition LU)")
     print("5. Cholesky")
-    print("6. Jacobi (itératif)")
-    print("7. Gauss-Seidel (itératif)")
+    print("6. Jacobi")
+    print("7. Gauss-Seidel")
     print("0. Retour")
     return input("Choix : ")
 
@@ -108,34 +108,34 @@ def main():
                     elif sous_choix == '2':
                         a = float(input("Borne inférieure a : "))
                         b = float(input("Borne supérieure b : "))
-                        tol = float(input("Tolérance (def=1e-6) : ") or 1e-6)
-                        max_iter = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter_, conv = dichotomie.dichotomie(f, a, b, tol, max_iter)
+                        tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
+                        max_iteration = int(input("Max itérations (def=100) : ") or 100)
+                        racine, iter_, conv = dichotomie.dichotomie(f, a, b, tolerance, max_iteration)
                         print(f"Racine : {racine}, itérations : {iter_}, convergence : {conv}")
                     elif sous_choix == '3':
                         # Pour Newton, besoin de la dérivée
                         print("Saisie de la dérivée f'(x) :")
                         f_prime = saisir_fonction.saisir_fonction()
                         x0 = float(input("Point initial x0 : "))
-                        tol = float(input("Tolérance (def=1e-6) : ") or 1e-6)
-                        max_iter = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter_, conv = newton.newton(f, f_prime, x0, tol, max_iter)
+                        tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
+                        max_iteration = int(input("Max itérations (def=100) : ") or 100)
+                        racine, iter_, conv = newton.newton(f, f_prime, x0, tolerance, max_iteration)
                         print(f"Racine : {racine}, itérations : {iter_}, convergence : {conv}")
                     elif sous_choix == '4':
                         x0 = float(input("Premier point x0 : "))
                         x1 = float(input("Second point x1 : "))
-                        tol = float(input("Tolérance (def=1e-6) : ") or 1e-6)
-                        max_iter = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter_, conv = secante.secante(f, x0, x1, tol, max_iter)
+                        tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
+                        max_iteration = int(input("Max itérations (def=100) : ") or 100)
+                        racine, iter_, conv = secante.secante(f, x0, x1, tolerance, max_iteration)
                         print(f"Racine : {racine}, itérations : {iter_}, convergence : {conv}")
                     elif sous_choix == '5':
                         # Pour point fixe, on a besoin de g(x) = x - f(x) ou autre
                         print("Saisie de la fonction g(x) pour le point fixe x = g(x) :")
                         g = saisir_fonction.saisir_fonction()
                         x0 = float(input("Point initial x0 : "))
-                        tol = float(input("Tolérance (def=1e-6) : ") or 1e-6)
-                        max_iter = int(input("Max itérations (def=100) : ") or 100)
-                        racine, iter_, conv = point_fixe.point_fixe(g, x0, tol, max_iter)
+                        tolerance = float(input("Tolérance (def=1e-6) : ") or 1e-6)
+                        max_iteration = int(input("Max itérations (def=100) : ") or 100)
+                        racine, iter_, conv = point_fixe.point_fixe(g, x0, tolerance, max_iteration)
                         print(f"Point fixe : {racine}, itérations : {iter_}, convergence : {conv}")
                     else:
                         print("Choix invalide")
