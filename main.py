@@ -9,7 +9,7 @@ from lineaires.directes import gauss_sans_pivot, gauss_pivot, gauss_jordan, crou
 from lineaires.iteratives import jacobi, gauss_seidel
 from non_lineaires import balayage, dichotomie, newton, secante, point_fixe
 from utils import saisir_fonction, saisir_matrice
-#from utils.linear_utils import resoudre_LU, resoudre_Cholesky
+from utils.linear_utils import resoudre_LU, resoudre_Cholesky
 
 def menu_principal():
     print("\n||- Analyse Numérique : Résolution d'équations -||")
@@ -70,12 +70,12 @@ def main():
                         L, U = crout.crout(A)
                         print("L =", L)
                         print("U =", U)
-                        #x = resoudre_LU(L, U, b)
+                        x = resoudre_LU(L, U, b)
                         print("Solution :", x)
                     elif sous_choix == '5':
                         L = cholesky.cholesky(A)
                         print("L (Cholesky) =", L)
-                        #x = resoudre_Cholesky(L, b)
+                        x = resoudre_Cholesky(L, b)
                         print("Solution :", x)
                     elif sous_choix == '6':
                         x0 = [0.0]*n

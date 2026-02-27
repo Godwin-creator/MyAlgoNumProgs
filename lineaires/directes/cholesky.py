@@ -1,24 +1,15 @@
 from utils.verifications import verifier_matrice_carree, verifier_tolerance
 from utils.linear_utils import copie_matrice
 
-def cholesky(A, tol=1e-12):
-    """
-    Factorisation de Cholesky A = L * L^T pour une matrice symétrique définie positive.
-    Paramètres :
-        A : matrice carrée symétrique (liste de listes)
-        tol : seuil pour détecter une matrice non définie positive
-    Retourne :
-        L : matrice triangulaire inférieure (liste de listes)
-    Lève une exception si la matrice n'est pas symétrique ou pas définie positive.
-    """
+def cholesky(A, tolerance=1e-12):
     n = verifier_matrice_carree(A)
-    tol = verifier_tolerance(tol)
+    tolerance = verifier_tolerance(tolerance)
 
     # Vérification de la symétrie
     for i in range(n):
         for j in range(i, n):
-            if abs(A[i][j] - A[j][i]) > tol:
-                raise ValueError(f"La matrice n'est pas symétrique : A[{i}][{j}] = {A[i][j]}, A[{j}][{i}] = {A[j][i]}, différence = {abs(A[i][j]-A[j][i])} > {tol}.")
+            if abs(A[i][j] - A[j][i]) > tolerance:
+                raise ValueError(f"La matrice n'est pas symétrique : A[{i}][{j}] = {A[i][j]}, A[{j}][{i}] = {A[j][i]}, différence = {abs(A[i][j]-A[j][i])} > {tolerance}.")
 
     L = [[0.0] * n for _ in range(n)]
 
@@ -26,12 +17,12 @@ def cholesky(A, tol=1e-12):
         for j in range(i+1):
             s = sum(L[i][k] * L[j][k] for k in range(j))
             if i == j:
-                diag = A[i][i] - s
-                if diag <= tol:
-                    raise ValueError(f"Matrice non définie positive : terme diagonal L[{i}][{i}]^2 = {diag} <= {tol}.")
-                L[i][j] = diag ** 0.5
+                diagonal = A[i][i] - s
+                if diagonal <= tolerance:
+                    raise ValueError(f"Matrice non définie positive : terme diagonal L[{i}][{i}]^2 = {diagonal} <= {tolerance}.")
+                L[i][j] = diagonal ** 0.5
             else:
-                if abs(L[j][j]) < tol:
+                if abs(L[j][j]) < tolerance:
                     raise ValueError(f"Pivot nul lors de la factorisation : L[{j}][{j}] = {L[j][j]}.")
                 L[i][j] = (A[i][j] - s) / L[j][j]
 
