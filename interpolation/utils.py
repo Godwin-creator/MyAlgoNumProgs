@@ -2,7 +2,6 @@
 import sympy as sp
 
 def expr_lagrange(xi, yi):
-
     x = sp.Symbol('x')
     n = len(xi)
     expr = 0
